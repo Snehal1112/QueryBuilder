@@ -3,7 +3,6 @@ package query
 import (
 	"database/sql"
 	"fmt"
-	"github.com/joho/godotenv"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -15,7 +14,7 @@ type Database struct {
 }
 
 func NewDatabase(driver string) *Database {
-	db, err := sql.Open(driver, dataSourceName())
+	db, err := sql.Open(driver, dataSourceName(driver))
 
 	if err != nil {
 		log.Println(err)
@@ -23,9 +22,9 @@ func NewDatabase(driver string) *Database {
 	return &Database{db}
 }
 
-func dataSourceName() string {
-	if err := godotenv.Load(); err != nil {
-		log.Error(err)
+func dataSourceName(driver string) string {
+	if driver == "sqlite3" {
+		return os.Getenv("SQLITE_DB")
 	}
 
 	return  fmt.Sprintf("%s:%s@/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"))
