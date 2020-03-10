@@ -24,7 +24,7 @@ func NewDatabase(driver string) *Database {
 }
 
 func dataSourceName(driver string) string {
-	if driver == "sqlite3" {
+	if len(driver) != 0  && driver == "sqlite3" {
 		return os.Getenv("SQLITE_DB")
 	}
 
@@ -35,6 +35,20 @@ func (d *Database)Insert(table string) *InsertQuery {
 	return &InsertQuery{db: d, table: table}
 }
 
-func (d *Database) Exec(query string, args ...interface{}) (sql.Result, error){
-	return d.DB.Exec(query, args...)
+func (d *Database)Create(table string) *CreateQuery {
+	return &CreateQuery{db: d, table:table}
+}
+
+func (d *Database) Exec(queryType int, query string, args ...interface{}) (sql.Result, error){
+
+	if queryType == DatabaseQuery {
+		stmt, err := d.DB.Prepare(query)
+		if err != nil {
+			return nil, err
+		}
+		defer stmt.Close()
+		return stmt.Exec()
+	} else {
+		return d.DB.Exec(query, args...)
+	}
 }

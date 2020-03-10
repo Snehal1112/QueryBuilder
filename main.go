@@ -24,15 +24,14 @@ func main() {
 		driver = "mysql"
 	}
 
-	log.Println(driver)
-
 	db := query.NewDatabase(driver)
 
-	result, err := db.Insert("user").Fields(map[string]interface{}{
-		"first_name": "Snehal",
-		"last_name": "Dangroshiya",
-	}).Execute()
+	create := db.Create("dfff")
+	create.Field("id", "int", 50, []int{query.NOTNULL, query.AI, query.PK})
+	create.Field("first_name", "varchar", 30, []int{})
+	create.Field("last_name", "varchar", 30, []int{})
 
+	result, err := create.Execute()
 	if err != nil {
 		log.Error(err)
 	}
@@ -42,4 +41,19 @@ func main() {
 		log.Warn(err)
 	}
 	log.Println("Result:", id)
+
+	// result, err := db.Insert("user").Fields(map[string]interface{}{
+	// 	"first_name": "Snehal",
+	// 	"last_name": "Dangroshiya",
+	// }).Execute()
+	//
+	// if err != nil {
+	// 	log.Error(err)
+	// }
+	//
+	// id, err := result.LastInsertId()
+	// if err != nil {
+	// 	log.Warn(err)
+	// }
+	// log.Println("Result:", id)
 }

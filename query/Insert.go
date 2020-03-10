@@ -28,5 +28,5 @@ func (q *InsertQuery) Execute() (sql.Result, error ){
 	}
 	query := "INSERT INTO `"+q.table+"` ("+strings.Join(fields, ", ")+") VALUES ("+strings.Join(placeholders, ", ")+")"
 
-	return q.db.Exec(query, args...)
+	return q.db.Exec(TableQuery, query, args...)
 }
