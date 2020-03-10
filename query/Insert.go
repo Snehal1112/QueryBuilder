@@ -5,10 +5,6 @@ import (
 	"strings"
 )
 
-type InsertField struct {
-	field string
-	value interface{}
-}
 type InsertQuery struct {
 	db *Database
 	table string
@@ -21,10 +17,8 @@ func (q *InsertQuery) Fields(fields map[string]interface{}) *InsertQuery {
 }
 
 func (q *InsertQuery) Execute() (sql.Result, error ){
-
 	var fields []string
 	var args []interface{}
-
 	var placeholders []string
 
 	for k, v :=range q.fields{

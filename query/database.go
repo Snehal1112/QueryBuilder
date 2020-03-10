@@ -3,21 +3,32 @@ package query
 import (
 	"database/sql"
 
+	"fmt"
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 type Database struct {
 	DB *sql.DB
 }
 
-func NewDatabase(driver string, url string) *Database {
-	db, err := sql.Open(driver, url)
+func NewDatabase(driver string) *Database {
+	db, err := sql.Open(driver, dataSourceName(driver))
+
 	if err != nil {
-		logrus.Println(err)
+		log.Println(err)
+	}
+	return &Database{db}
+}
+
+func dataSourceName(driver string) string {
+	if driver == "sqlite3" {
+		return os.Getenv("SQLITE_DB")
 	}
 
-	return &Database{db}
+	return  fmt.Sprintf("%s:%s@/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_DATABASE"))
 }
 
 func (d *Database)Insert(table string) *InsertQuery {
