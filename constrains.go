@@ -1,6 +1,6 @@
 package query
 
-
+// Constance define the constrains.
 const (
 	NOTNULL = iota + 100
 	UNIQUE
@@ -10,6 +10,7 @@ const (
 	AI
 )
 
+// GetConstrain helper function used to get the constance value.
 func GetConstrain(constrainID int) string {
 	switch constrainID {
 	case NOTNULL:
@@ -28,7 +29,8 @@ func GetConstrain(constrainID int) string {
 	return ""
 }
 
-
+// Constance define the type of the query either it can be
+// database/table level query.
 const (
 	DatabaseQuery = iota + 0
 	TableQuery
