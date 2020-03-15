@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Snehal1112/QueryBuilder/constrain"
+	"github.com/Snehal1112/QueryBuilder/datatype"
 	"github.com/spf13/cast"
 )
 
@@ -14,8 +16,14 @@ type field struct {
 	constrain string
 }
 
+type foreignKeyConstrain struct {
+	constrain string
+	foreignKey string
+	fkTable string
+}
+
 // CreateQuery struct contains the table and fields info to build the create query.
-type CreateQuery struct {
+type CreateTable struct {
 	db     *Database
 	table  string
 	fields []field
@@ -25,47 +33,38 @@ type CreateQuery struct {
 	foreignKeyConstrain *foreignKeyConstrain
 }
 
-
-
 // Constructor for the CreateQuery.
-func NewCreateQuery(db *Database, table string) *CreateQuery {
-	return &CreateQuery{db: db, table: table}
+func NewCreateQuery(db *Database, table string) *CreateTable {
+	return &CreateTable{db: db, table: table}
 }
 
 // Field function used to set the field for create query.
-func (c *CreateQuery) Field(name string, fieldType int, length interface{}, constrain []int) *CreateQuery {
-	var constrains []string
-	for _, v := range constrain {
-		constrains = append(constrains, GetConstrain(v))
+func (c *CreateTable) Field(name string, fieldType int, length interface{}, constrains []int) *CreateTable {
+	var fieldConstrains []string
+	for _, v := range constrains {
+		fieldConstrains = append(fieldConstrains, constrain.Get(v))
 	}
 
-	fieldDataType := GetDataType(fieldType)
-	if IsSupportLength(fieldType) {
+	fieldDataType := datatype.GetDataType(fieldType)
+	if datatype.IsSupportLength(fieldType) {
 		fieldDataType +=  "("+cast.ToString(length)+")"
 	}
 
 	c.fields = append(c.fields, field{
 		fieldName: name,
 		fieldType: fieldDataType,
-		constrain: strings.Join(constrains, " "),
+		constrain: strings.Join(fieldConstrains, " "),
 	})
 	return c
 }
 
 // SetPrimaryKey function used to set the PK to multiple columns.
-func (c *CreateQuery) SetPrimaryKey(fields []string) *CreateQuery {
-	columns := strings.Join(fields, ", ")
-	c.primaryKey = fmt.Sprintf("%s (%s)", GetConstrain(PK), columns)
+func (c *CreateTable) SetPrimaryKey(fields []string) *CreateTable {
+	c.primaryKey = fmt.Sprintf("%s (%s)", constrain.Get(constrain.PK), strings.Join(fields, ", "))
 	return c
 }
 
-type foreignKeyConstrain struct {
-	constrain string
-	foreignKey string
-	fkTable string
-}
-
-func (c *CreateQuery) newForeignKeyConstrain(constrain, foreignKey , fkTable string) *CreateQuery {
+func (c *CreateTable) NewForeignKeyConstrain(constrain, foreignKey , fkTable string) *CreateTable {
 	c.foreignKeyConstrain = &foreignKeyConstrain{
 		constrain: constrain,
 		foreignKey: foreignKey,
@@ -75,15 +74,15 @@ func (c *CreateQuery) newForeignKeyConstrain(constrain, foreignKey , fkTable str
 }
 
 func (f *foreignKeyConstrain) onUpdate(referenceOpt int) string {
-	return fmt.Sprintf(" ON UPDATE %s", GetReferenceOpt(referenceOpt))
+	return fmt.Sprintf(" ON UPDATE %s", constrain.GetReferenceOpt(referenceOpt))
 }
 
 func (f *foreignKeyConstrain) onDelete(referenceOpt int) string {
-	return fmt.Sprintf(" ON DELETE %s", GetReferenceOpt(referenceOpt))
+	return fmt.Sprintf(" ON DELETE %s", constrain.GetReferenceOpt(referenceOpt))
 }
 
 // SetForeignKey set the foreign key on the table.
-func (c *CreateQuery) SetForeignKey(onUpdate, onDelete interface{}) *CreateQuery {
+func (c *CreateTable) SetForeignKey(onUpdate, onDelete interface{}) *CreateTable {
 	fk := c.foreignKeyConstrain
 	c.foreignKey = fmt.Sprintf(", CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s)", fk.constrain, fk.foreignKey, fk.fkTable, fk.foreignKey)
 	if onUpdate != nil {
@@ -96,7 +95,7 @@ func (c *CreateQuery) SetForeignKey(onUpdate, onDelete interface{}) *CreateQuery
 	return c
 }
 
-func (c *CreateQuery) prepareQuery() string {
+func (c *CreateTable) prepareQuery() string {
 	var fields []string
 	for _, v := range c.fields {
 		fields = append(fields, strings.Trim(v.fieldName+" "+v.fieldType+" "+v.constrain, " "))
@@ -112,6 +111,6 @@ func (c *CreateQuery) prepareQuery() string {
 }
 
 // Execute function execute the create query.
-func (c *CreateQuery) Execute() (sql.Result, error) {
-	return c.db.Exec(DatabaseQuery, c.prepareQuery(), nil)
+func (c *CreateTable) Execute() (sql.Result, error) {
+	return c.db.Exec(constrain.DatabaseQuery, c.prepareQuery(), nil)
 }

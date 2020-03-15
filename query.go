@@ -6,4 +6,5 @@ import (
 
 type Query interface {
 	Execute() (sql.Result, error)
+	prepareQuery() string
 }
