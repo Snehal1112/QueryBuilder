@@ -13,6 +13,11 @@ type InsertQuery struct {
 	fields map[string]interface{}
 }
 
+// Constructor for the InsertQuery.
+func NewInsertQuery(db *Database, table string) *InsertQuery {
+	return &InsertQuery{db: db, table: table}
+}
+
 // Fields function used to set the fields which further used to prepare the insert query.
 func (q *InsertQuery) Fields(fields map[string]interface{}) *InsertQuery {
 	q.fields = fields
@@ -31,6 +36,5 @@ func (q *InsertQuery) Execute() (sql.Result, error) {
 		placeholders = append(placeholders, "?")
 	}
 	query := "INSERT INTO `" + q.table + "` (" + strings.Join(fields, ", ") + ") VALUES (" + strings.Join(placeholders, ", ") + ")"
-
 	return q.db.Exec(TableQuery, query, args...)
 }

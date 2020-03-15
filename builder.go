@@ -25,6 +25,7 @@ func SQLBuilder(driver string) *Database {
 }
 
 func dataSourceName(driver string) string {
+	// TODO: validate the env and error handling.
 	if len(driver) != 0 && driver == "sqlite3" {
 		return os.Getenv("SQLITE_DB")
 	}
@@ -33,13 +34,13 @@ func dataSourceName(driver string) string {
 }
 
 // Insert function used to perform the Insert query.
-func (d *Database) Insert(table string) *InsertQuery {
-	return &InsertQuery{db: d, table: table}
+func (d *Database) Insert(tableName string) *InsertQuery {
+	return NewInsertQuery(d, tableName)
 }
 
 // Create function used to perform the create query.
-func (d *Database) Create(table string) *CreateQuery {
-	return &CreateQuery{db: d, table: table}
+func (d *Database) Create(tableName string) *CreateQuery {
+	return NewCreateQuery(d,tableName)
 }
 
 // Exec function execute the query.
