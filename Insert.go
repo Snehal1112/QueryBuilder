@@ -3,8 +3,6 @@ package query
 import (
 	"database/sql"
 	"strings"
-
-	"github.com/Snehal1112/QueryBuilder/constrain"
 )
 
 // InsertQuery struct contains the table, fields information
@@ -38,5 +36,5 @@ func (q *InsertQuery) Execute() (sql.Result, error) {
 		placeholders = append(placeholders, "?")
 	}
 	query := "INSERT INTO `" + q.table + "` (" + strings.Join(fields, ", ") + ") VALUES (" + strings.Join(placeholders, ", ") + ")"
-	return q.db.Exec(constrain.TableQuery, query, args...)
+	return q.db.Exec(TableQuery, query, args...)
 }

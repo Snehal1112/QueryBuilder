@@ -1,4 +1,4 @@
-package constrain
+package query
 
 // Constance define the constrains.
 const (
@@ -10,7 +10,7 @@ const (
 	AI
 )
 
-// GetConstrain helper function used to get the constance value.
+// Get helper function used to get the constance value.
 func Get(constrainID int) string {
 	switch constrainID {
 	case NOTNULL:

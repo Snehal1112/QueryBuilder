@@ -4,20 +4,22 @@ import (
 	"log"
 	"os"
 	"testing"
-
-	"github.com/Snehal1112/QueryBuilder/constrain"
-	"github.com/Snehal1112/QueryBuilder/datatype"
 )
 func setupEnv() {
 	os.Setenv("DB_USER", "root")
 	os.Setenv("DB_PASSWORD", "Snehal@1977")
-//	os.Setenv("DB_DATABASE", "querybuilder")
+	os.Setenv("DB_DATABASE", "querybuilder")
 	os.Setenv("DRIVER", "mysql")
 }
 
-func TestCreateQuery_Field(t *testing.T) {
+func connectDB() *Database {
 	setupEnv()
 	db := SQLBuilder(os.Getenv("DRIVER"))
+	return db
+}
+
+func TestCreateQuery_Field(t *testing.T) {
+	db := connectDB()
 
 	defer db.Close()
 	/*
@@ -53,8 +55,8 @@ func TestCreateQuery_Field(t *testing.T) {
 		db.SelectDB("querybuilder")
 	}
 	createCategories := db.CreateTable("categories")
-	createCategories.Field("categoryId", datatype.INT,50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
-	createCategories.Field("categoryName", datatype.VARCHAR, 225, []int{})
+	createCategories.Field("categoryId", INT,50, []int{NOTNULL, AI, PK})
+	createCategories.Field("categoryName", VARCHAR, 225, []int{})
 
 	result, err := createCategories.Execute()
 	if err != nil {
@@ -67,11 +69,11 @@ func TestCreateQuery_Field(t *testing.T) {
 	}
 
 	creatProducts := db.CreateTable("products")
-	creatProducts.Field("productId", datatype.INT, 50, []int{constrain.AI, constrain.PK})
-	creatProducts.Field("productName", datatype.VARCHAR, 225, []int{constrain.NOTNULL})
-	creatProducts.Field("categoryId", datatype.INT, 50, []int{})
+	creatProducts.Field("productId", INT, 50, []int{AI, PK})
+	creatProducts.Field("productName", VARCHAR, 225, []int{NOTNULL})
+	creatProducts.Field("categoryId", INT, 50, []int{})
 	creatProducts.NewForeignKeyConstrain("fk_category", "categoryId", "categories")
-	creatProducts.SetForeignKey(constrain.CASCADE, constrain.CASCADE)
+	creatProducts.SetForeignKey(CASCADE, CASCADE)
 
 	result, err = creatProducts.Execute()
 	if err != nil {

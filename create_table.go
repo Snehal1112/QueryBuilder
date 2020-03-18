@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Snehal1112/QueryBuilder/constrain"
-	"github.com/Snehal1112/QueryBuilder/datatype"
 	"github.com/spf13/cast"
 )
 
@@ -17,23 +15,23 @@ type field struct {
 }
 
 type foreignKeyConstrain struct {
-	constrain string
+	constrain  string
 	foreignKey string
-	fkTable string
+	fkTable    string
 }
 
-// CreateQuery struct contains the table and fields info to build the create query.
+// CreateTable struct contains the table and fields info to build the create query.
 type CreateTable struct {
-	db     *Database
-	table  string
-	fields []field
+	db         *Database
+	table      string
+	fields     []field
 	primaryKey string
 	foreignKey string
 
 	foreignKeyConstrain *foreignKeyConstrain
 }
 
-// Constructor for the CreateQuery.
+// NewCreateQuery for the CreateQuery.
 func NewCreateQuery(db *Database, table string) *CreateTable {
 	return &CreateTable{db: db, table: table}
 }
@@ -42,12 +40,12 @@ func NewCreateQuery(db *Database, table string) *CreateTable {
 func (c *CreateTable) Field(name string, fieldType int, length interface{}, constrains []int) *CreateTable {
 	var fieldConstrains []string
 	for _, v := range constrains {
-		fieldConstrains = append(fieldConstrains, constrain.Get(v))
+		fieldConstrains = append(fieldConstrains, Get(v))
 	}
 
-	fieldDataType := datatype.GetDataType(fieldType)
-	if datatype.IsSupportLength(fieldType) {
-		fieldDataType +=  "("+cast.ToString(length)+")"
+	fieldDataType := GetDataType(fieldType)
+	if IsSupportLength(fieldType) {
+		fieldDataType += "(" + cast.ToString(length) + ")"
 	}
 
 	c.fields = append(c.fields, field{
@@ -60,25 +58,25 @@ func (c *CreateTable) Field(name string, fieldType int, length interface{}, cons
 
 // SetPrimaryKey function used to set the PK to multiple columns.
 func (c *CreateTable) SetPrimaryKey(fields []string) *CreateTable {
-	c.primaryKey = fmt.Sprintf("%s (%s)", constrain.Get(constrain.PK), strings.Join(fields, ", "))
+	c.primaryKey = fmt.Sprintf("%s (%s)", Get(PK), strings.Join(fields, ", "))
 	return c
 }
 
-func (c *CreateTable) NewForeignKeyConstrain(constrain, foreignKey , fkTable string) *CreateTable {
+func (c *CreateTable) NewForeignKeyConstrain(constrain, foreignKey, fkTable string) *CreateTable {
 	c.foreignKeyConstrain = &foreignKeyConstrain{
-		constrain: constrain,
+		constrain:  constrain,
 		foreignKey: foreignKey,
-		fkTable: fkTable,
+		fkTable:    fkTable,
 	}
 	return c
 }
 
 func (f *foreignKeyConstrain) onUpdate(referenceOpt int) string {
-	return fmt.Sprintf(" ON UPDATE %s", constrain.GetReferenceOpt(referenceOpt))
+	return fmt.Sprintf(" ON UPDATE %s", GetReferenceOpt(referenceOpt))
 }
 
 func (f *foreignKeyConstrain) onDelete(referenceOpt int) string {
-	return fmt.Sprintf(" ON DELETE %s", constrain.GetReferenceOpt(referenceOpt))
+	return fmt.Sprintf(" ON DELETE %s", GetReferenceOpt(referenceOpt))
 }
 
 // SetForeignKey set the foreign key on the table.
@@ -112,5 +110,5 @@ func (c *CreateTable) prepareQuery() string {
 
 // Execute function execute the create query.
 func (c *CreateTable) Execute() (sql.Result, error) {
-	return c.db.Exec(constrain.DatabaseQuery, c.prepareQuery(), nil)
+	return c.db.Exec(DatabaseQuery, c.prepareQuery(), nil)
 }

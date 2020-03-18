@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Snehal1112/QueryBuilder/constrain"
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
 )
@@ -28,6 +27,7 @@ func SQLBuilder(driver string) *Database {
 	}
 
 	database := &Database{DB: db}
+
 	if name := database.GetSelectedDB(); len(name) != 0 {
 		database.isDBSelected = true
 	}
@@ -80,9 +80,31 @@ func (d *Database) CreateTable(name string) *CreateTable {
 	return NewCreateQuery(d, name)
 }
 
+func (d *Database) DropTableColumns(name string) *DropTableColumns {
+	return NewDropTableColumns(d, name)
+}
+
+// DropTable function used to drop the table.
+func (d *Database) DropTable(name []string) *DropTable {
+	return NewDropTable(d, name)
+}
+
+// DropDatabase function used to drop the database.
+func (d *Database) DropDatabase(name string) *DropDatabase {
+	return NewDropDatabase(d, name)
+}
+
+// func (d *Database) GetTable(name string) *ADDTableColumns {
+// 	return NewGetTable(d, name)
+// }
+
+func (d *Database) AddColumn(name string) *ADDTableColumns {
+	return NewADDTableColumns(d, name)
+}
+
 // Exec function execute the query.
 func (d *Database) Exec(queryType int, query string, args ...interface{}) (sql.Result, error) {
-	if queryType == constrain.DatabaseQuery {
+	if queryType == DatabaseQuery {
 		stmt, err := d.DB.Prepare(query)
 		if err != nil {
 			return nil, err

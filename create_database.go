@@ -2,8 +2,7 @@ package query
 
 import (
 	"database/sql"
-
-	"github.com/Snehal1112/QueryBuilder/constrain"
+	"fmt"
 )
 
 type CreateDatabase struct {
@@ -16,9 +15,10 @@ func NewCreateDatabase(db *Database, name string) *CreateDatabase {
 }
 
 func (d *CreateDatabase) prepareQuery() string {
-	return ""
+	// TODO: validate the database name.
+	return fmt.Sprintf("CREATE DATABASE %s", d.name)
 }
 
 func (d *CreateDatabase) Execute() (sql.Result, error) {
-	return d.db.Exec(constrain.TableQuery, d.prepareQuery(), nil)
+	return d.db.Exec(DatabaseQuery, d.prepareQuery(), nil)
 }

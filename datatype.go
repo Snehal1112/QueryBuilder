@@ -1,4 +1,4 @@
-package datatype
+package query
 
 const (
 	VARCHAR = iota + 1000
