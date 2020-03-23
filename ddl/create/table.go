@@ -1,24 +1,33 @@
 package create
 
-import "log"
+import (
+	"database/sql"
+	"log"
+)
 
-type Table struct {}
-
-func NewTable() *Table {
-	return &Table{}
+type Table struct {
+	name string
+	db *sql.DB
 }
 
-func (ct *Table)Fields() *Table {
+func NewTable(name string, db *sql.DB) *Table {
+	return &Table{db:db, name:name}
+}
+
+func (t *Table)Fields() *Table {
 	log.Println("Fields called")
-	return ct
+	return t
 }
 
-func (ct *Table)PrepareQuery() *Table {
+func (t *Table)PrepareQuery() *Table {
 	log.Println("PrepareQuery called")
-	return ct
+	return t
 }
 
-func (ct *Table)Execute() *Table {
-	log.Println("execute called")
-	return ct
+func (t *Table) Execute(query string, args ...interface{}) (sql.Result, error) {
+	return t.execute(query,args)
+}
+
+func (t *Table) execute(query string, args ...interface{}) (sql.Result, error) {
+	return t.db.Exec(query, args...)
 }

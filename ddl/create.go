@@ -1,17 +1,21 @@
 package ddl
 
-import "github.com/Snehal1112/QueryBuilder/ddl/create"
+import (
+	"github.com/Snehal1112/QueryBuilder/ddl/create"
+)
 
-type CreateQuery struct {}
-
-func NewCreateQuery() *CreateQuery {
-	return &CreateQuery{}
+type CreateQuery struct {
+	builder *Builder
 }
 
-func (D *CreateQuery) Table() *create.Table {
-	return create.NewTable()
+func NewCreateQuery(b *Builder) *CreateQuery {
+	return &CreateQuery{builder: b}
 }
 
-func (D *CreateQuery) Database() *create.Database {
+func (d *CreateQuery) Table(name string) *create.Table {
+	return create.NewTable(name, d.builder.DB)
+}
+
+func (d *CreateQuery) Database() *create.Database {
 	return create.NewDatabase()
 }

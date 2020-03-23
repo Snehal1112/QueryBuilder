@@ -1,19 +1,23 @@
 package ddl
 
-type Builder struct {}
+import "database/sql"
 
-func NewBuilder() Service {
-	return &Builder{}
+type Builder struct {
+	DB *sql.DB
 }
 
-func (b Builder) Drop() *DropQuery {
+func NewBuilder(db *sql.DB) Service {
+	return &Builder{db}
+}
+
+func (b *Builder) Drop() *DropQuery {
 	return NewDropQuery()
 }
 
-func (b Builder) Alter() *AlterQuery {
+func (b *Builder) Alter() *AlterQuery {
 	return NewAlterQuery()
 }
 
-func (b Builder) Create() *CreateQuery {
-	return NewCreateQuery()
+func (b *Builder) Create() *CreateQuery {
+	return NewCreateQuery(b)
 }
