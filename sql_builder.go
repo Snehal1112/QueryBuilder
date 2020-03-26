@@ -8,6 +8,7 @@ import (
 
 	"github.com/Snehal1112/QueryBuilder/ddl"
 	"github.com/Snehal1112/QueryBuilder/dml"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // SQLBuilder struct expos the different type of sql query
@@ -18,6 +19,7 @@ type SQLBuilder struct{
 
 // NewSQLBuilder constructor for the SQLBuilder
 func NewSQLBuilder(driver string) SQL {
+	log.Println(driver)
 	sqlBuilder := &SQLBuilder{}
 	db, err := sql.Open(driver, sqlBuilder.dataSourceName(driver))
 	if err != nil {
@@ -32,6 +34,9 @@ func NewSQLBuilder(driver string) SQL {
 	if name := sqlBuilder.GetSelectedDB(); len(name) != 0 {
 		sqlBuilder.isDBSelected = true
 	}
+
+	log.Println(sqlBuilder)
+	log.Println(sqlBuilder)
 	return sqlBuilder
 }
 
@@ -45,6 +50,7 @@ func (s *SQLBuilder) dataSourceName(driver string) string {
 	if len(database) != 0 {
 		connectionStr += fmt.Sprintf("%s", os.Getenv("DB_DATABASE"))
 	}
+	log.Println(connectionStr)
 	return connectionStr
 }
 
@@ -66,6 +72,8 @@ func (s *SQLBuilder) GetSelectedDB() string {
 
 // NewDDL function is entry point for the DDL(Data Definition Language)
 func (s *SQLBuilder) NewDDL() ddl.Service {
+
+	log.Println("sddd")
 	return ddl.NewBuilder(s.DB)
 }
 
