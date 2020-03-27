@@ -12,10 +12,10 @@ func NewCreateQuery(b *Builder) CreateService {
 	return &CreateQuery{builder: b}
 }
 
-func (d *CreateQuery) Table(name string) create.TableService {
-	return create.NewTable(name, d.builder.DB)
+func (c *CreateQuery) Table(name string) create.TableService {
+	return create.NewTable(name, c.builder.DB)
 }
 
-func (d *CreateQuery) Database() *create.Database {
-	return create.NewDatabase()
+func (c *CreateQuery) Database(name string) create.DatabaseService {
+	return create.NewDatabase(name, c.builder.DB)
 }

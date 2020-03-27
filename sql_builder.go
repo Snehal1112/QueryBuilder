@@ -66,6 +66,9 @@ func (s *SQLBuilder) GetSelectedDB() string {
 	return name
 }
 
+// TODO: Create SQlFactory function based to the type
+// return the instance of query type.
+
 // NewDDL function is entry point for the DDL(Data Definition Language)
 func (s *SQLBuilder) NewDDL() ddl.Service {
 	return ddl.NewBuilder(s.DB)

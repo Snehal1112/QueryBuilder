@@ -19,7 +19,10 @@ func setupEnv() {
 func TestNewSQLBuilder(t *testing.T) {
 	setupEnv()
 	log.Println("asdasd")
-	table := NewSQLBuilder("mysql").NewDDL().Create().Table("categories")
+
+	builder := NewSQLBuilder("mysql")
+
+	table :=builder.NewDDL().Create().Table("categories")
 	table.Field("categoryId", datatype.INT,50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
 	table.Field("categoryName", datatype.VARCHAR, 225, []int{})
 	table.Execute()

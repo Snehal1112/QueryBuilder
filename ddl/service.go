@@ -10,6 +10,6 @@ type Service interface {
 
 type CreateService interface {
 	Table(name string) create.TableService
-	Database() *create.Database
+	Database(name string) create.DatabaseService
 }
 
