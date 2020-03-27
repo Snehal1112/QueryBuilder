@@ -2,16 +2,18 @@ package ddl
 
 import "github.com/Snehal1112/QueryBuilder/ddl/drop"
 
-type DropQuery struct {}
-
-func NewDropQuery() *DropQuery {
-	return &DropQuery{}
+type DropQuery struct {
+	builder *Builder
 }
 
-func (D *DropQuery) CreateTable() *drop.Table {
+func NewDropQuery(b *Builder) *DropQuery {
+	return &DropQuery{builder: b}
+}
+
+func (D *DropQuery) Table() *drop.Table {
 	return drop.NewTable()
 }
 
-func (D *DropQuery) CreateDatabase() *drop.Database {
+func (D *DropQuery) Database() *drop.Database {
 	return drop.NewDatabase()
 }

@@ -8,11 +8,11 @@ type CreateQuery struct {
 	builder *Builder
 }
 
-func NewCreateQuery(b *Builder) *CreateQuery {
+func NewCreateQuery(b *Builder) CreateService {
 	return &CreateQuery{builder: b}
 }
 
-func (d *CreateQuery) Table(name string) *create.Table {
+func (d *CreateQuery) Table(name string) create.TableService {
 	return create.NewTable(name, d.builder.DB)
 }
 

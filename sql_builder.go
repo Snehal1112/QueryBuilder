@@ -30,13 +30,9 @@ func NewSQLBuilder(driver string) SQL {
 		log.Println("Error is ping :", err)
 	}
 	sqlBuilder.DB = db
-
 	if name := sqlBuilder.GetSelectedDB(); len(name) != 0 {
 		sqlBuilder.isDBSelected = true
 	}
-
-	log.Println(sqlBuilder)
-	log.Println(sqlBuilder)
 	return sqlBuilder
 }
 
@@ -72,8 +68,6 @@ func (s *SQLBuilder) GetSelectedDB() string {
 
 // NewDDL function is entry point for the DDL(Data Definition Language)
 func (s *SQLBuilder) NewDDL() ddl.Service {
-
-	log.Println("sddd")
 	return ddl.NewBuilder(s.DB)
 }
 

@@ -32,7 +32,7 @@ type Table struct {
 	foreignKeyConstrain *foreignKeyConstrain
 }
 
-func NewTable(name string, db *sql.DB) *Table {
+func NewTable(name string, db *sql.DB) TableService {
 	return &Table{db:db, table:name}
 }
 
@@ -108,11 +108,7 @@ func (t *Table) prepareQuery() string {
 }
 
 func (t *Table) Execute() (sql.Result, error) {
-	return t.execute(t.prepareQuery(), nil)
-}
-
-func (t *Table) execute(query string, args ...interface{}) (sql.Result, error) {
-	stmt, err := t.db.Prepare(query)
+	stmt, err := t.db.Prepare(t.prepareQuery())
 	if err != nil {
 		return nil, err
 	}

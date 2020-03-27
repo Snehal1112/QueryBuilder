@@ -11,13 +11,13 @@ func NewBuilder(db *sql.DB) Service {
 }
 
 func (b *Builder) Drop() *DropQuery {
-	return NewDropQuery()
+	return NewDropQuery(b)
 }
 
 func (b *Builder) Alter() *AlterQuery {
 	return NewAlterQuery()
 }
 
-func (b *Builder) Create() *CreateQuery {
+func (b *Builder) Create() CreateService {
 	return NewCreateQuery(b)
 }
