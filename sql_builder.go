@@ -19,7 +19,6 @@ type SQLBuilder struct{
 
 // NewSQLBuilder constructor for the SQLBuilder
 func NewSQLBuilder(driver string) SQL {
-	log.Println(driver)
 	sqlBuilder := &SQLBuilder{}
 	db, err := sql.Open(driver, sqlBuilder.dataSourceName(driver))
 	if err != nil {
@@ -44,9 +43,8 @@ func (s *SQLBuilder) dataSourceName(driver string) string {
 	connectionStr := fmt.Sprintf("%s:%s@/", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"))
 	database := os.Getenv("DB_DATABASE")
 	if len(database) != 0 {
-		connectionStr += fmt.Sprintf("%s", os.Getenv("DB_DATABASE"))
+		connectionStr += fmt.Sprintf("%s", database)
 	}
-	log.Println(connectionStr)
 	return connectionStr
 }
 

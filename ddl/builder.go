@@ -10,7 +10,7 @@ func NewBuilder(db *sql.DB) Service {
 	return &Builder{db}
 }
 
-func (b *Builder) Drop() *DropQuery {
+func (b *Builder) Drop() DropService {
 	return NewDropQuery(b)
 }
 

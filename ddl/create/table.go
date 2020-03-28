@@ -104,7 +104,7 @@ func (t *Table) prepareQuery() string {
 	if len(t.foreignKey) != 0 {
 		columns += t.foreignKey
 	}
-	return fmt.Sprintf("CREATE Table IF NOT EXISTS %s ( %s )", t.table, columns)
+	return fmt.Sprintf("CREATE Table IF NOT EXISTS %s ( %s );", t.table, columns)
 }
 
 func (t *Table) Execute() (sql.Result, error) {

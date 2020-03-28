@@ -16,10 +16,8 @@ func setupEnv() {
 	os.Setenv("DRIVER", "mysql")
 }
 
-func TestNewSQLBuilder(t *testing.T) {
+func TestSQLBuilder(t *testing.T) {
 	setupEnv()
-	log.Println("asdasd")
-
 	builder := NewSQLBuilder("mysql")
 
 	table :=builder.NewDDL().Create().Table("categories")
@@ -29,5 +27,10 @@ func TestNewSQLBuilder(t *testing.T) {
 	log.Println("sdd")
 
 
+
 	builder.NewDDL().Drop().Table([]string{"sd"}).Temporary(true).Execute()
+}
+
+func TestSQLBuilder_NewDDL(t *testing.T) {
+	log.Println("sddddd")
 }
