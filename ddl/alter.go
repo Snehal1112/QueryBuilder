@@ -2,12 +2,14 @@ package ddl
 
 import "github.com/Snehal1112/QueryBuilder/ddl/alter"
 
-type AlterQuery struct{}
-
-func NewAlterQuery() *AlterQuery {
-	return &AlterQuery{}
+type AlterQuery struct{
+	builder *Builder
 }
 
-func (D *AlterQuery) Table() *alter.Table {
-	return alter.NewTable()
+func NewAlterQuery(	builder *Builder) AlterService {
+	return &AlterQuery{builder:builder}
+}
+
+func (a *AlterQuery) Table(name string) alter.TableService {
+	return alter.NewTable(name, a.builder.DB)
 }

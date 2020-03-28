@@ -24,9 +24,6 @@ func TestSQLBuilder(t *testing.T) {
 	table.Field("categoryId", datatype.INT,50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
 	table.Field("categoryName", datatype.VARCHAR, 225, []int{})
 	table.Execute()
-	log.Println("sdd")
-
-
 
 	builder.NewDDL().Drop().Table([]string{"sd"}).Temporary(true).Execute()
 }

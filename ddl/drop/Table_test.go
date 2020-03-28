@@ -5,6 +5,7 @@ import (
 )
 
 var table = NewTable([]string{"a", "b"}, nil)
+
 func TestNewTable(t *testing.T) {
 	result := table.prepareQuery()
 	var want = "DROP TABLE IF EXISTS a, b;"

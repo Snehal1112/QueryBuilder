@@ -14,8 +14,8 @@ func (b *Builder) Drop() DropService {
 	return NewDropQuery(b)
 }
 
-func (b *Builder) Alter() *AlterQuery {
-	return NewAlterQuery()
+func (b *Builder) Alter() AlterService {
+	return NewAlterQuery(b)
 }
 
 func (b *Builder) Create() CreateService {

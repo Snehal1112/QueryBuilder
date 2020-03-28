@@ -1,6 +1,7 @@
 package ddl
 
 import (
+	"github.com/Snehal1112/QueryBuilder/ddl/alter"
 	"github.com/Snehal1112/QueryBuilder/ddl/create"
 	"github.com/Snehal1112/QueryBuilder/ddl/drop"
 )
@@ -8,7 +9,7 @@ import (
 type Service interface {
 	Create() CreateService
 	Drop() DropService
-	Alter() *AlterQuery
+	Alter() AlterService
 }
 
 type CreateService interface {
@@ -21,3 +22,6 @@ type DropService interface {
 	Database(name string) drop.DatabaseService
 }
 
+type AlterService interface {
+	Table(name string) alter.TableService
+}
