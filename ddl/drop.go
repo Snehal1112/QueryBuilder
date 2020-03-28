@@ -6,14 +6,14 @@ type DropQuery struct {
 	builder *Builder
 }
 
-func NewDropQuery(b *Builder) *DropQuery {
+func NewDropQuery(b *Builder) DropService {
 	return &DropQuery{builder: b}
 }
 
-func (D *DropQuery) Table() *drop.Table {
-	return drop.NewTable()
+func (d *DropQuery) Table(name []string) drop.TableService {
+	return drop.NewTable(name, d.builder.DB)
 }
 
-func (D *DropQuery) Database() *drop.Database {
-	return drop.NewDatabase()
+func (d *DropQuery) Database(name string) drop.DatabaseService {
+	return drop.NewDatabase(name, d.builder.DB)
 }

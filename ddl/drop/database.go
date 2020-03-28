@@ -1,19 +1,28 @@
 package drop
 
-import "log"
+import (
+	"database/sql"
+	"fmt"
+)
 
-type Database struct {}
-
-func NewDatabase() *Database {
-	return &Database{}
+type Database struct {
+	name string
+	db *sql.DB
 }
 
-func (cd *Database)PrepareQuery() *Database {
-	log.Println("PrepareQuery CreateDatabase")
-	return cd
+func NewDatabase(name string , db *sql.DB) DatabaseService {
+	return &Database{name:name, db:db}
 }
 
-func (cd *Database)Execute() *Database {
-	log.Println("Execute CreateDatabase")
-	return cd
+func (d *Database)prepareQuery() string {
+	return fmt.Sprintf("DROP DATABASE IF EXISTS %s;", d.name)
+}
+
+func (d *Database)Execute() (sql.Result, error) {
+	stmt, err := d.db.Prepare(d.prepareQuery())
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec()
 }

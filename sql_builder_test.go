@@ -27,4 +27,7 @@ func TestNewSQLBuilder(t *testing.T) {
 	table.Field("categoryName", datatype.VARCHAR, 225, []int{})
 	table.Execute()
 	log.Println("sdd")
+
+
+	builder.NewDDL().Drop().Table([]string{"sd"}).Temporary(true).Execute()
 }
