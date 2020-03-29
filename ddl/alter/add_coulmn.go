@@ -12,10 +12,8 @@ import (
 	"github.com/spf13/cast"
 )
 
-const query = `ALTER TABLE {{.table}} {{range $i, $v := .columns}}
-	ADD 
-		{{$v.Name}} {{$v.FieldType}} {{$v.Constrain}}
-		{{if $v.InsertAt.Insert}}{{$v.InsertAt.Position}} {{$v.InsertAt.ExistingColumn}}{{end}}, {{end}}`
+const addColTpl = `ADD {{.Name}} {{.FieldType}} {{.Constrain}} {{if .InsertAt.Insert}}{{.InsertAt.Position}} {{.InsertAt.ExistingColumn}}{{end}}`
+const queryTpl = `ALTER TABLE {{.table}} {{addColumn .columns}}`
 
 type insertAt struct {
 	Insert bool
@@ -74,14 +72,31 @@ func (a *AddColumn) InsertAt(insertFirst bool, existingColumn string) *AddColumn
 	return a
 }
 
+func addColumn(columns []column) string{
+	var col []string
+	for _, c := range columns {
+
+		tpl := template.Must(template.New("col").Parse(addColTpl))
+		buf := &bytes.Buffer{}
+		if err := tpl.Execute(buf, c); err != nil {
+			logrus.Error(err)
+		}
+		col = append(col, buf.String())
+	}
+	return strings.Join(col, ", ") + ";"
+}
+
 func (a *AddColumn) prepareQuery() string {
-	tpl := template.Must(template.New("Add Columns").Parse(query))
+	tpl := template.Must(template.New("Add Columns").Funcs(template.FuncMap{
+		"addColumn" : addColumn,
+	}).Parse(queryTpl))
+
 	buf := &bytes.Buffer{}
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"table" : a.tableName,
 		"columns" : a.columns,
 	}); err != nil {
-		logrus.Error("Error in transpile the add column query")
+		logrus.Error(err)
 	}
 
 	return buf.String()
