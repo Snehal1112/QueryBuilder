@@ -20,12 +20,12 @@ func TestSQLBuilder(t *testing.T) {
 	setupEnv()
 	builder := NewSQLBuilder("mysql")
 
-	table :=builder.NewDDL().Create().Table("categories")
-	table.Field("categoryId", datatype.INT,50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
+	table := builder.NewDDL().Create().Table("categories")
+	table.Field("categoryId", datatype.INT, 50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
 	table.Field("categoryName", datatype.VARCHAR, 225, []int{})
 	table.Execute()
 
-	builder.NewDDL().Alter().Table("sd").Add().Column("hh",1,5,[]int{76}).InsertAt(false, "sd").Execute()
+	builder.NewDDL().Alter().Table("sd").Add().Column("hh", 1, 5, []int{76}).InsertAt(false, "sd").Execute()
 	builder.NewDDL().Drop().Table([]string{"sd"}).Temporary(true).Execute()
 }
 

@@ -37,7 +37,7 @@ func TestNewTable(t *testing.T) {
 		)
 	*/
 	categoriesTable := NewTable("categories", nil)
-	categoriesTable.Field("categoryId", datatype.INT,50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
+	categoriesTable.Field("categoryId", datatype.INT, 50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
 	categoriesTable.Field("categoryName", datatype.VARCHAR, 225, []int{})
 
 	var want = "CREATE Table IF NOT EXISTS categories ( categoryId INT(50) NOT NULL AUTO_INCREMENT PRIMARY KEY, categoryName VARCHAR(225) );"

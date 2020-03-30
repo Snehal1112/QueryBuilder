@@ -1,6 +1,6 @@
 package dml
 
-type Builder struct {}
+type Builder struct{}
 
 func NewBuilder() *Builder {
 	return &Builder{}

@@ -12,4 +12,3 @@ type SQL interface {
 	SelectDB(name string) error
 	GetSelectedDB() string
 }
-

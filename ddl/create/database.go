@@ -3,19 +3,18 @@ package create
 import (
 	"database/sql"
 	"fmt"
-
 )
 
 type Database struct {
-	db *sql.DB
-	name      string
+	db   *sql.DB
+	name string
 }
 
 func NewDatabase(name string, db *sql.DB) DatabaseService {
 	return &Database{name: name, db: db}
 }
 
-func (d *Database)prepareQuery() string {
+func (d *Database) prepareQuery() string {
 	return fmt.Sprintf("CREATE DATABASE IF NOTE EXISTS %s;", d.name)
 }
 

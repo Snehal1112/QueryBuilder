@@ -23,7 +23,7 @@ type foreignKeyConstrain struct {
 }
 
 type Table struct {
-	db *sql.DB
+	db         *sql.DB
 	table      string
 	fields     []field
 	primaryKey string
@@ -33,10 +33,10 @@ type Table struct {
 }
 
 func NewTable(name string, db *sql.DB) TableService {
-	return &Table{db:db, table:name}
+	return &Table{db: db, table: name}
 }
 
-func (t *Table)Field(name string, fieldType int, length interface{}, constrains []int) *Table {
+func (t *Table) Field(name string, fieldType int, length interface{}, constrains []int) *Table {
 	var fieldConstrains []string
 	for _, v := range constrains {
 		fieldConstrains = append(fieldConstrains, constrain.Get(v))

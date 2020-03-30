@@ -12,30 +12,31 @@ import (
 	"github.com/spf13/cast"
 )
 
-const addColTpl = `ADD {{.Name}} {{.FieldType}} {{.Constrain}} {{if .InsertAt.Insert}}{{.InsertAt.Position}} {{.InsertAt.ExistingColumn}}{{end}}`
+// TODO: Use nested templating
+const addColTpl = `ADD {{.Name}} {{.FieldType}} {{.Constrain}} {{if .InsertAt.Insert}}{{.InsertAt.Position}}{{if eq .InsertAt.Position "AFTER"}} {{.InsertAt.ExistingColumn}}{{end}}{{end}}`
 const queryTpl = `ALTER TABLE {{.table}} {{addColumn .columns}}`
 
 type insertAt struct {
-	Insert bool
-	Position string
+	Insert         bool
+	Position       string
 	ExistingColumn string
 }
 
 type column struct {
-	Name string
+	Name      string
 	FieldType string
 	Constrain string
-	InsertAt insertAt
+	InsertAt  insertAt
 }
 
 type AddColumn struct {
-	table *Table
+	table     *Table
 	tableName string
-	columns []column
+	columns   []column
 }
 
 func NewAddColumn(table *Table) AddNewColumn {
-	return &AddColumn{tableName: table.name, table:table}
+	return &AddColumn{tableName: table.name, table: table}
 }
 
 func (a *AddColumn) Column(name string, fieldType int, length interface{}, constrains []int, options ...interface{}) *AddColumn {
@@ -47,36 +48,35 @@ func (a *AddColumn) Column(name string, fieldType int, length interface{}, const
 
 	fieldDataType := datatype.Get(fieldType)
 	if datatype.IsSupportLength(fieldType) {
-		fieldDataType +=  "("+cast.ToString(length)+")"
+		fieldDataType += "(" + cast.ToString(length) + ")"
 	}
 
 	a.columns = append(a.columns, column{
-		Name: name,
+		Name:      name,
 		FieldType: fieldDataType,
 		Constrain: strings.Join(fieldConstrains, " "),
 	})
 	return a
 }
 
-func (a *AddColumn) InsertAt(insertFirst bool, existingColumn string) *AddColumn {
-	field := &a.columns[len(a.columns) - 1]
+func (a *AddColumn) InsertAt(insertAfter bool, existingColumn string) *AddColumn {
+	field := &a.columns[len(a.columns)-1]
 
-	var insertAt = "AFTER"
-	if insertFirst {
-		insertAt = "FIRST"
+	var insertAt = "FIRST"
+	if insertAfter {
+		insertAt = "AFTER"
+		field.InsertAt.ExistingColumn = existingColumn
 	}
 
 	field.InsertAt.Insert = true
 	field.InsertAt.Position = insertAt
-	field.InsertAt.ExistingColumn = existingColumn
 	return a
 }
 
-func addColumn(columns []column) string{
+func addColumn(columns []column) string {
 	var col []string
+	tpl := template.Must(template.New("col").Parse(addColTpl))
 	for _, c := range columns {
-
-		tpl := template.Must(template.New("col").Parse(addColTpl))
 		buf := &bytes.Buffer{}
 		if err := tpl.Execute(buf, c); err != nil {
 			logrus.Error(err)
@@ -88,13 +88,13 @@ func addColumn(columns []column) string{
 
 func (a *AddColumn) prepareQuery() string {
 	tpl := template.Must(template.New("Add Columns").Funcs(template.FuncMap{
-		"addColumn" : addColumn,
+		"addColumn": addColumn,
 	}).Parse(queryTpl))
 
 	buf := &bytes.Buffer{}
 	if err := tpl.Execute(buf, map[string]interface{}{
-		"table" : a.tableName,
-		"columns" : a.columns,
+		"table":   a.tableName,
+		"columns": a.columns,
 	}); err != nil {
 		logrus.Error(err)
 	}

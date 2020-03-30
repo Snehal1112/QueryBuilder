@@ -8,17 +8,18 @@ import (
 
 	"github.com/sirupsen/logrus"
 )
+
 const query = `DROP{{if .temporary}} TEMPORARY{{end}} TABLE IF EXISTS {{join  ", " .name}};`
 
 type Table struct {
-	names []string
-	db *sql.DB
+	names     []string
+	db        *sql.DB
 	temporary bool
 }
 
 type Warnings struct {
-	level string `json:"level"`
-	code int `json:"code"`
+	level   string `json:"level"`
+	code    int    `json:"code"`
 	message string `json:"message"`
 }
 
@@ -27,7 +28,7 @@ func NewWarnings() *Warnings {
 }
 
 func NewTable(names []string, db *sql.DB) *Table {
-	return &Table{names:names, db:db}
+	return &Table{names: names, db: db}
 }
 
 func (t *Table) Warning() *Warnings {
@@ -54,9 +55,9 @@ func join(spe string, elem []string) string {
 }
 
 func (t *Table) prepareQuery() string {
-	queryData := map[string]interface{} {
-		"temporary" : t.temporary,
-		"name" : t.names,
+	queryData := map[string]interface{}{
+		"temporary": t.temporary,
+		"name":      t.names,
 	}
 
 	// TODO: Improve templating logic

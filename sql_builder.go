@@ -12,8 +12,8 @@ import (
 )
 
 // SQLBuilder struct expos the different type of sql query
-type SQLBuilder struct{
-	DB *sql.DB
+type SQLBuilder struct {
+	DB           *sql.DB
 	isDBSelected bool
 }
 
@@ -49,8 +49,8 @@ func (s *SQLBuilder) dataSourceName(driver string) string {
 }
 
 // SelectDB function used to select the database.
-func (s *SQLBuilder) SelectDB(name string) error{
-	_, err := s.DB.Exec("USE "+name)
+func (s *SQLBuilder) SelectDB(name string) error {
+	_, err := s.DB.Exec("USE " + name)
 	if err == nil {
 		s.isDBSelected = true
 	}
