@@ -14,20 +14,6 @@ import (
 
 // TODO: Use nested templating
 const addColTpl = `ADD {{.Name}} {{.FieldType}} {{.Constrain}} {{if .InsertAt.Insert}}{{.InsertAt.Position}}{{if eq .InsertAt.Position "AFTER"}} {{.InsertAt.ExistingColumn}}{{end}}{{end}}`
-const queryTpl = `ALTER TABLE {{.table}} {{addColumn .columns}}`
-
-type insertAt struct {
-	Insert         bool
-	Position       string
-	ExistingColumn string
-}
-
-type column struct {
-	Name      string
-	FieldType string
-	Constrain string
-	InsertAt  insertAt
-}
 
 type AddColumn struct {
 	table     *Table
@@ -88,7 +74,7 @@ func addColumn(columns []column) string {
 
 func (a *AddColumn) prepareQuery() string {
 	tpl := template.Must(template.New("Add Columns").Funcs(template.FuncMap{
-		"addColumn": addColumn,
+		"handler": addColumn,
 	}).Parse(queryTpl))
 
 	buf := &bytes.Buffer{}
