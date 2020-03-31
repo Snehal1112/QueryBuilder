@@ -1,4 +1,4 @@
-package query
+package datatype
 
 const (
 	VARCHAR = iota + 1000
@@ -25,8 +25,8 @@ func IsSupportLength(dataType int) bool {
 	return false
 }
 
-// GetDataType function returns the data type.
-func GetDataType(dataTypeID int) string {
+// Get function returns the data type.
+func Get(dataTypeID int) string {
 	switch dataTypeID {
 	case VARCHAR:
 		return "VARCHAR"

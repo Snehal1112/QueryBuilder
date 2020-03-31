@@ -1,4 +1,4 @@
-package query
+package constrain
 
 // Constance define the constrains.
 const (
@@ -29,36 +29,28 @@ func Get(constrainID int) string {
 	return "NULL"
 }
 
-// Constance define the type of the query either it can be
-// database/table level query.
-const (
-	DatabaseQuery = iota + 0
-	TableQuery
-)
-
 // Constants used to mange the referential integrity between the child and parent tables
 // by using the ON DELETE and ON UPDATE clauses
 const (
-	SETNULL = iota + 2000
-	CASCADE
-	RESTRICT
-	NOACTION
-	SETDEFAULT
+	SetNull = iota + 2000
+	Cascade
+	Restrict
+	NoAction
+	SetDefault
 )
 
 func GetReferenceOpt(referenceOpt int) string {
 	switch referenceOpt {
-	case SETNULL:
+	case SetNull:
 		return "SET NULL"
-	case CASCADE:
+	case Cascade:
 		return "CASCADE"
-	case RESTRICT:
+	case Restrict:
 		return "RESTRICT"
-	case NOACTION:
+	case NoAction:
 		return "NO ACTION"
-	case SETDEFAULT:
+	default:
 		// TODO: SET DEFAULT is not supported right now
 		return "SET NULL"
 	}
-	return "SET NULL"
 }
