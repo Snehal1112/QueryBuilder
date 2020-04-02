@@ -15,7 +15,7 @@ func NewDatabase(name string, db *sql.DB) DatabaseService {
 }
 
 func (d *Database) prepareQuery() string {
-	return fmt.Sprintf("CREATE DATABASE IF NOTE EXISTS %s;", d.name)
+	return fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", d.name)
 }
 
 func (d *Database) Execute() (sql.Result, error) {

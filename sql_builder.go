@@ -45,6 +45,8 @@ func (s *SQLBuilder) dataSourceName(driver string) string {
 	if len(database) != 0 {
 		connectionStr += fmt.Sprintf("%s", database)
 	}
+
+	log.Println(connectionStr)
 	return connectionStr
 }
 
