@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"database/sql"
 	"html/template"
-	"log"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -90,20 +89,23 @@ func (t *Table) prepareQuery() string {
 	case DropColumns:
 		return ""
 	case RenameColumns:
-		log.Println("Table prepareQuery called")
-		return t.rename.PrepareQuery()
+		return t.rename.prepareQuery()
 	default:
-		return t.addCol.PrepareQuery()
+		return t.addCol.prepareQuery()
 	}
 }
 
 // Execute function
 func (t *Table) Execute() (sql.Result, error) {
-	t.queryType = 0
+	defer func() {
+		t.queryType = 0
+	}()
+
 	stmt, err := t.db.Prepare(t.prepareQuery())
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
+
 	return stmt.Exec()
 }

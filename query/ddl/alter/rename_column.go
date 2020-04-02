@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"database/sql"
 	"html/template"
-	"log"
 
 	"github.com/Snehal1112/QueryBuilder/query"
 	"github.com/sirupsen/logrus"
@@ -76,12 +75,7 @@ func (r *Rename) prepareQueryToRenameTable() string {
 	})
 }
 
-func (r *Rename) PrepareQuery() string {
-	return r.prepareQuery()
-}
-
 func (r *Rename) prepareQuery() string {
-	log.Println("rename prepareQuery called")
 	if r.renameType == ReColumn {
 		return r.prepareQueryToRenameColumn()
 	}

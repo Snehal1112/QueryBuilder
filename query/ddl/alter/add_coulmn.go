@@ -45,10 +45,6 @@ func (a *AddColumn) InsertAt(insertAfter bool, existingColumn string) *AddColumn
 	return a
 }
 
-func (r *AddColumn) PrepareQuery() string {
-	return r.prepareQuery()
-}
-
 func (a *AddColumn) prepareQuery() string {
 	tpl := template.Must(template.New("Add Columns").Funcs(template.FuncMap{
 		"handler": a.table.queryTranspiler,
