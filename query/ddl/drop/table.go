@@ -55,16 +55,14 @@ func join(spe string, elem []string) string {
 }
 
 func (t *Table) prepareQuery() string {
-	queryData := map[string]interface{}{
-		"temporary": t.temporary,
-		"name":      t.names,
-	}
-
 	// TODO: Improve templating logic
 	tpl := template.New("").Funcs(template.FuncMap{"join": join})
 	tpl = template.Must(tpl.Parse(query))
 	buf := &bytes.Buffer{}
-	if err := tpl.Execute(buf, queryData); err != nil {
+	if err := tpl.Execute(buf, map[string]interface{}{
+		"temporary": t.temporary,
+		"name":      t.names,
+	}); err != nil {
 		logrus.Error("Error in transpile the drop query")
 	}
 	return buf.String()
