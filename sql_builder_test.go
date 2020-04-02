@@ -1,4 +1,4 @@
-package query
+package builder
 
 import (
 	"log"
@@ -24,7 +24,7 @@ func TestSQLBuilder(t *testing.T) {
 	table.Field("categoryName", query.VARCHAR, 225, []int{})
 	table.Execute()
 
-	builder.NewDDL().Alter().Table("sd").Add().Column("hh", 1, 5, []int{76}).InsertAt(false, "sd").Execute()
+	builder.NewDDL().Alter().Table("sd").Add().Column("hh", query.NewDataType(query.INT, 50), query.NewConstrain([]int{query.AI, query.NOTNULL})).InsertAt(false, "sd").Execute()
 	builder.NewDDL().Drop().Table([]string{"sd"}).Temporary(true).Execute()
 }
 

@@ -6,8 +6,7 @@ import (
 	"github.com/Snehal1112/QueryBuilder/query"
 )
 
-
-func TestTable_Add(t *testing.T) {
+func TestAddColumn_Column(t *testing.T) {
 	var table = NewTable("categories", nil)
 	var want = "ALTER TABLE categories ADD categoryId INT(200) NOT NULL AUTO_INCREMENT AFTER name, ADD categoryId INT(200) NOT NULL AUTO_INCREMENT FIRST;"
 	addCol := table.Add()
@@ -20,7 +19,7 @@ func TestTable_Add(t *testing.T) {
 	}
 }
 
-func TestTable_Rename(t *testing.T) {
+func TestRename_Column(t *testing.T) {
 	var table = NewTable("categories", nil)
 	rename := table.Rename()
 	rename.Column("sd","sdd", query.NewDataType(query.INT, 200), query.NewConstrain([]int{query.NOTNULL, query.AI}))

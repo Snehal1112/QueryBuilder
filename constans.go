@@ -1,4 +1,4 @@
-package query
+package builder
 
 const (
 	DDL = iota + 1

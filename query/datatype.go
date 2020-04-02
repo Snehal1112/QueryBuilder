@@ -27,7 +27,7 @@ func NewDataType(dataType int, length interface{}) *DataType {
 }
 
 func (d *DataType) AsString() string {
-	fieldDataType := d.Get(d.dataType)
+	fieldDataType := Get(d.dataType)
 	if d.isSupportLength(d.dataType) {
 		fieldDataType += "(" + cast.ToString(d.length) + ")"
 	}
@@ -44,7 +44,7 @@ func (d *DataType)isSupportLength(dataType int) bool {
 }
 
 // Get function returns the data type.
-func (d *DataType) Get(dataTypeID int) string {
+func Get(dataTypeID int) string {
 	switch dataTypeID {
 	case VARCHAR:
 		return "VARCHAR"

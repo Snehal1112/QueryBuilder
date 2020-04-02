@@ -1,6 +1,10 @@
 package query
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/spf13/cast"
+)
 
 // Constance define the constrains.
 const (
@@ -16,20 +20,20 @@ type Constrain struct {
 	Cons []int
 }
 
-func NewConstrain(cons []int) *Constrain {
-	return &Constrain{Cons: cons}
+func NewConstrain(cons interface{}) *Constrain {
+	return &Constrain{Cons: cast.ToIntSlice(cons)}
 }
 
 func (c *Constrain) AsString() string {
 	var constrain []string
 	for _, con := range c.Cons {
-		constrain = append(constrain, c.Get(con))
+		constrain = append(constrain, GetConstrain(con))
 	}
 	return strings.Join(constrain, " ")
 }
 
 // Get helper function used to get the constance value.
-func (c *Constrain)Get(constrainID int) string {
+func GetConstrain(constrainID int) string {
 	switch constrainID {
 	case NOTNULL:
 		return "NOT NULL"

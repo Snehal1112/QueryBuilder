@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/Snehal1112/QueryBuilder/query"
-	"github.com/spf13/cast"
 )
 
 type field struct {
@@ -35,28 +34,18 @@ func NewTable(name string, db *sql.DB) TableService {
 	return &Table{db: db, table: name}
 }
 
-func (t *Table) Field(name string, fieldType int, length interface{}, constrains []int) *Table {
-	var fieldConstrains []string
-	for _, v := range constrains {
-		fieldConstrains = append(fieldConstrains, sql.Get(v))
-	}
-
-	fieldDataType := query.Get(fieldType)
-	if query.IsSupportLength(fieldType) {
-		fieldDataType += "(" + cast.ToString(length) + ")"
-	}
-
+func (t *Table) Field(name string, dataType *query.DataType, constrain *query.Constrain) *Table {
 	t.fields = append(t.fields, field{
 		fieldName: name,
-		fieldType: fieldDataType,
-		constrain: strings.Join(fieldConstrains, " "),
+		fieldType: dataType.AsString(),
+		constrain: constrain.AsString(),
 	})
 	return t
 }
 
 // SetPrimaryKey function used to set the PK to multiple columns.
 func (t *Table) SetPrimaryKey(fields []string) *Table {
-	t.primaryKey = fmt.Sprintf("%s (%s)", sql.Get(sql.PK), strings.Join(fields, ", "))
+	t.primaryKey = fmt.Sprintf("%s (%s)", query.GetConstrain(query.PK), strings.Join(fields, ", "))
 	return t
 }
 
@@ -70,11 +59,11 @@ func (t *Table) NewForeignKeyConstrain(constrain, foreignKey, fkTable string) *T
 }
 
 func (f *foreignKeyConstrain) onUpdate(referenceOpt int) string {
-	return fmt.Sprintf(" ON UPDATE %s", sql.GetReferenceOpt(referenceOpt))
+	return fmt.Sprintf(" ON UPDATE %s", query.GetReferenceOpt(referenceOpt))
 }
 
 func (f *foreignKeyConstrain) onDelete(referenceOpt int) string {
-	return fmt.Sprintf(" ON DELETE %s", sql.GetReferenceOpt(referenceOpt))
+	return fmt.Sprintf(" ON DELETE %s", query.GetReferenceOpt(referenceOpt))
 }
 
 // SetForeignKey set the foreign key on the table.

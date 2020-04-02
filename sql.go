@@ -1,4 +1,4 @@
-package query
+package builder
 
 import (
 	"github.com/Snehal1112/QueryBuilder/query/ddl"

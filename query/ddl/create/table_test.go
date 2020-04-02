@@ -36,8 +36,9 @@ func TestNewTable(t *testing.T) {
 		)
 	*/
 	categoriesTable := NewTable("categories", nil)
-	categoriesTable.Field("categoryId", query.INT, 50, []int{query.NOTNULL, query.AI, query.PK})
-	categoriesTable.Field("categoryName", query.VARCHAR, 225, []int{})
+
+	categoriesTable.Field("categoryId", query.NewDataType(query.INT, 50), query.NewConstrain([]int{query.NOTNULL, query.AI, query.PK}))
+	categoriesTable.Field("categoryName", query.NewDataType(query.VARCHAR, 225), query.NewConstrain([]int{}))
 
 	var want = "CREATE Table IF NOT EXISTS categories ( categoryId INT(50) NOT NULL AUTO_INCREMENT PRIMARY KEY, categoryName VARCHAR(225) );"
 	var result = categoriesTable.prepareQuery()
@@ -48,9 +49,9 @@ func TestNewTable(t *testing.T) {
 
 	// Associated products table with categories
 	productTable := NewTable("products", nil)
-	productTable.Field("productId", query.INT, 50, []int{query.AI, query.PK})
-	productTable.Field("productName", query.VARCHAR, 225, []int{query.NOTNULL})
-	productTable.Field("categoryId", query.INT, 50, []int{})
+	productTable.Field("productId", query.NewDataType(query.INT, 50), query.NewConstrain([]int{query.AI, query.PK}))
+	productTable.Field("productName", query.NewDataType(query.VARCHAR, 225), query.NewConstrain([]int{query.NOTNULL}))
+	productTable.Field("categoryId", query.NewDataType(query.INT, 50), query.NewConstrain(nil))
 	productTable.NewForeignKeyConstrain("fk_category", "categoryId", "categories")
 	productTable.SetForeignKey(query.Cascade, query.Cascade)
 
