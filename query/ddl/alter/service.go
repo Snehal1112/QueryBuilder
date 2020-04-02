@@ -18,12 +18,14 @@ type TableService interface {
 
 type AddNewColumn interface {
 	Column(name string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *AddColumn
+	PrepareQuery() string
 	Service
 }
 
 type RenameItem interface {
 	Column(name, newName string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *Rename
 	Table(newName string) *Rename
+	PrepareQuery() string
 	Service
 }
 

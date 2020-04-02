@@ -91,9 +91,9 @@ func (t *Table) prepareQuery() string {
 		return ""
 	case RenameColumns:
 		log.Println("Table prepareQuery called")
-		return t.rename.prepareQuery()
+		return t.rename.PrepareQuery()
 	default:
-		return t.addCol.prepareQuery()
+		return t.addCol.PrepareQuery()
 	}
 }
 
