@@ -5,7 +5,7 @@ SQL query builder
   - [ ] DDL (Data Definition Language)
     - [X] Create (table, database)
     - [X] Drop (table, database)
-    - [ ] Alter (table, database)
+    - [X] Alter (table, database)
     - [ ] Truncate
   - [ ] DML (Data Manipulation Language)
     - [ ] Insert query 

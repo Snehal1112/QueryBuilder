@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"database/sql"
 	"html/template"
+	"log"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -89,6 +90,7 @@ func (t *Table) prepareQuery() string {
 	case DropColumns:
 		return ""
 	case RenameColumns:
+		log.Println("Table prepareQuery called")
 		return t.rename.prepareQuery()
 	default:
 		return t.addCol.prepareQuery()
