@@ -31,3 +31,14 @@ func TestTable_Rename(t *testing.T) {
 		t.Errorf("NewTable.Add.prepareQuery returned %+v, want %+v", result, want)
 	}
 }
+
+func TestRename_Table(t *testing.T) {
+	var table = NewTable("categories", nil)
+	rename := table.Rename().Table("sddd")
+	result := rename.prepareQuery()
+	var want = "ALTER TABLE categories RENAME TO sddd;"
+
+	if result != want {
+		t.Errorf("NewTable.Add.prepareQuery returned %+v, want %+v", result, want)
+	}
+}

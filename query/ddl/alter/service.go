@@ -23,7 +23,7 @@ type AddNewColumn interface {
 
 type RenameItem interface {
 	Column(name, newName string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *Rename
-	Table(name, newName string) *Rename
+	Table(newName string) *Rename
 	Service
 }
 
