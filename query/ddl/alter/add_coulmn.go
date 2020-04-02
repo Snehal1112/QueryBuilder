@@ -4,12 +4,9 @@ import (
 	"bytes"
 	"database/sql"
 	"html/template"
-	"strings"
 
-	"github.com/Snehal1112/QueryBuilder/constrain"
-	"github.com/Snehal1112/QueryBuilder/datatype"
+	"github.com/Snehal1112/QueryBuilder/query"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/cast"
 )
 
 // TODO: Use nested templating
@@ -25,22 +22,11 @@ func NewAddColumn(table *Table) AddNewColumn {
 	return &AddColumn{tableName: table.name, table: table}
 }
 
-func (a *AddColumn) Column(name string, fieldType int, length interface{}, constrains []int, options ...interface{}) *AddColumn {
-	var fieldConstrains []string
-
-	for _, v := range constrains {
-		fieldConstrains = append(fieldConstrains, constrain.Get(v))
-	}
-
-	fieldDataType := datatype.Get(fieldType)
-	if datatype.IsSupportLength(fieldType) {
-		fieldDataType += "(" + cast.ToString(length) + ")"
-	}
-
+func (a *AddColumn) Column(name string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *AddColumn {
 	a.columns = append(a.columns, column{
 		Name:      name,
-		FieldType: fieldDataType,
-		Constrain: strings.Join(fieldConstrains, " "),
+		FieldType: fieldType.AsString(),
+		Constrain: constrains.AsString(),
 	})
 	return a
 }
@@ -59,28 +45,16 @@ func (a *AddColumn) InsertAt(insertAfter bool, existingColumn string) *AddColumn
 	return a
 }
 
-func addColumn(columns []column) string {
-	var col []string
-	tpl := template.Must(template.New("col").Parse(addColTpl))
-	for _, c := range columns {
-		buf := &bytes.Buffer{}
-		if err := tpl.Execute(buf, c); err != nil {
-			logrus.Error(err)
-		}
-		col = append(col, buf.String())
-	}
-	return strings.Join(col, ", ") + ";"
-}
-
 func (a *AddColumn) prepareQuery() string {
 	tpl := template.Must(template.New("Add Columns").Funcs(template.FuncMap{
-		"handler": addColumn,
+		"handler": a.table.queryTranspiler,
 	}).Parse(queryTpl))
 
 	buf := &bytes.Buffer{}
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"table":   a.tableName,
 		"columns": a.columns,
+		"query": addColTpl,
 	}); err != nil {
 		logrus.Error(err)
 	}

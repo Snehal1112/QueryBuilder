@@ -1,4 +1,6 @@
-package constrain
+package query
+
+import "strings"
 
 // Constance define the constrains.
 const (
@@ -10,8 +12,24 @@ const (
 	AI
 )
 
+type Constrain struct {
+	Cons []int
+}
+
+func NewConstrain(cons []int) *Constrain {
+	return &Constrain{Cons: cons}
+}
+
+func (c *Constrain) AsString() string {
+	var constrain []string
+	for _, con := range c.Cons {
+		constrain = append(constrain, c.Get(con))
+	}
+	return strings.Join(constrain, " ")
+}
+
 // Get helper function used to get the constance value.
-func Get(constrainID int) string {
+func (c *Constrain)Get(constrainID int) string {
 	switch constrainID {
 	case NOTNULL:
 		return "NOT NULL"

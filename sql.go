@@ -1,8 +1,8 @@
 package query
 
 import (
-	"github.com/Snehal1112/QueryBuilder/ddl"
-	"github.com/Snehal1112/QueryBuilder/dml"
+	"github.com/Snehal1112/QueryBuilder/query/ddl"
+	"github.com/Snehal1112/QueryBuilder/query/dml"
 )
 
 type SQL interface {

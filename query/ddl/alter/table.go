@@ -1,7 +1,10 @@
 package alter
 
 import (
+	"bytes"
 	"database/sql"
+	"html/template"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 )
@@ -14,7 +17,7 @@ const (
 	AddColumns
 )
 
-const queryTpl = `ALTER TABLE {{.table}} {{handler .columns}}`
+const queryTpl = `ALTER TABLE {{.table}} {{handler .columns .query}}`
 
 type insertAt struct {
 	Insert         bool
@@ -27,6 +30,7 @@ type column struct {
 	FieldType string
 	Constrain string
 	InsertAt  insertAt
+	NewName   string
 }
 
 // Table struct
@@ -64,6 +68,19 @@ func (t *Table) Rename() RenameItem {
 	t.queryType = RenameColumns
 	t.rename = NewRename(t)
 	return t.rename
+}
+
+func (t *Table) queryTranspiler(columns []column, query string) string {
+	var col []string
+	tpl := template.Must(template.New("column").Parse(query))
+	for _, c := range columns {
+		buf := &bytes.Buffer{}
+		if err := tpl.Execute(buf, c); err != nil {
+			logrus.Error(err)
+		}
+		col = append(col, buf.String())
+	}
+	return strings.Join(col, ", ") + ";"
 }
 
 // PrepareQuery function

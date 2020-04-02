@@ -3,8 +3,7 @@ package create
 import (
 	"testing"
 
-	"github.com/Snehal1112/QueryBuilder/constrain"
-	"github.com/Snehal1112/QueryBuilder/datatype"
+	"github.com/Snehal1112/QueryBuilder/query"
 )
 
 func TestNewTable(t *testing.T) {
@@ -37,8 +36,8 @@ func TestNewTable(t *testing.T) {
 		)
 	*/
 	categoriesTable := NewTable("categories", nil)
-	categoriesTable.Field("categoryId", datatype.INT, 50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
-	categoriesTable.Field("categoryName", datatype.VARCHAR, 225, []int{})
+	categoriesTable.Field("categoryId", query.INT, 50, []int{query.NOTNULL, query.AI, query.PK})
+	categoriesTable.Field("categoryName", query.VARCHAR, 225, []int{})
 
 	var want = "CREATE Table IF NOT EXISTS categories ( categoryId INT(50) NOT NULL AUTO_INCREMENT PRIMARY KEY, categoryName VARCHAR(225) );"
 	var result = categoriesTable.prepareQuery()
@@ -49,11 +48,11 @@ func TestNewTable(t *testing.T) {
 
 	// Associated products table with categories
 	productTable := NewTable("products", nil)
-	productTable.Field("productId", datatype.INT, 50, []int{constrain.AI, constrain.PK})
-	productTable.Field("productName", datatype.VARCHAR, 225, []int{constrain.NOTNULL})
-	productTable.Field("categoryId", datatype.INT, 50, []int{})
+	productTable.Field("productId", query.INT, 50, []int{query.AI, query.PK})
+	productTable.Field("productName", query.VARCHAR, 225, []int{query.NOTNULL})
+	productTable.Field("categoryId", query.INT, 50, []int{})
 	productTable.NewForeignKeyConstrain("fk_category", "categoryId", "categories")
-	productTable.SetForeignKey(constrain.Cascade, constrain.Cascade)
+	productTable.SetForeignKey(query.Cascade, query.Cascade)
 
 	want = "CREATE Table IF NOT EXISTS products ( productId INT(50) AUTO_INCREMENT PRIMARY KEY, productName VARCHAR(225) NOT NULL, categoryId INT(50), CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES categories(categoryId) ON UPDATE CASCADE ON DELETE CASCADE );"
 	result = productTable.prepareQuery()

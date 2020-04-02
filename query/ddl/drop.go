@@ -1,6 +1,6 @@
 package ddl
 
-import "github.com/Snehal1112/QueryBuilder/ddl/drop"
+import "github.com/Snehal1112/QueryBuilder/query/ddl/drop"
 
 type DropQuery struct {
 	builder *Builder

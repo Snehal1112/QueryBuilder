@@ -1,9 +1,9 @@
 package ddl
 
 import (
-	"github.com/Snehal1112/QueryBuilder/ddl/alter"
-	"github.com/Snehal1112/QueryBuilder/ddl/create"
-	"github.com/Snehal1112/QueryBuilder/ddl/drop"
+	"github.com/Snehal1112/QueryBuilder/query/ddl/alter"
+	"github.com/Snehal1112/QueryBuilder/query/ddl/create"
+	"github.com/Snehal1112/QueryBuilder/query/ddl/drop"
 )
 
 type Service interface {

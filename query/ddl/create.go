@@ -1,7 +1,7 @@
 package ddl
 
 import (
-	"github.com/Snehal1112/QueryBuilder/ddl/create"
+	"github.com/Snehal1112/QueryBuilder/query/ddl/create"
 )
 
 type CreateQuery struct {

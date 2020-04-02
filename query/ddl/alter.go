@@ -1,6 +1,6 @@
 package ddl
 
-import "github.com/Snehal1112/QueryBuilder/ddl/alter"
+import "github.com/Snehal1112/QueryBuilder/query/ddl/alter"
 
 type AlterQuery struct {
 	builder *Builder

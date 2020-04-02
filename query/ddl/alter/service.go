@@ -1,6 +1,10 @@
 package alter
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/Snehal1112/QueryBuilder/query"
+)
 
 type Service interface {
 	prepareQuery() string
@@ -13,12 +17,12 @@ type TableService interface {
 }
 
 type AddNewColumn interface {
-	Column(name string, fieldType int, length interface{}, constrains []int, options ...interface{}) *AddColumn
+	Column(name string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *AddColumn
 	Service
 }
 
 type RenameItem interface {
-	Column(name, newName string, fieldType int, length interface{}, constrains []int, options ...interface{}) *Rename
+	Column(name, newName string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *Rename
 	Table(name, newName string) *Rename
 	Service
 }

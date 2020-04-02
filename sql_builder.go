@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Snehal1112/QueryBuilder/ddl"
-	"github.com/Snehal1112/QueryBuilder/dml"
+	"github.com/Snehal1112/QueryBuilder/query/ddl"
+	"github.com/Snehal1112/QueryBuilder/query/dml"
 	_ "github.com/go-sql-driver/mysql"
 )
 

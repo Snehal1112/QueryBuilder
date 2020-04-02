@@ -5,8 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Snehal1112/QueryBuilder/constrain"
-	"github.com/Snehal1112/QueryBuilder/datatype"
+	"github.com/Snehal1112/QueryBuilder/query"
 )
 
 func setupEnv() {
@@ -21,8 +20,8 @@ func TestSQLBuilder(t *testing.T) {
 	builder := NewSQLBuilder("mysql")
 
 	table := builder.NewDDL().Create().Table("categories")
-	table.Field("categoryId", datatype.INT, 50, []int{constrain.NOTNULL, constrain.AI, constrain.PK})
-	table.Field("categoryName", datatype.VARCHAR, 225, []int{})
+	table.Field("categoryId", query.INT, 50, []int{query.NOTNULL, query.AI, query.PK})
+	table.Field("categoryName", query.VARCHAR, 225, []int{})
 	table.Execute()
 
 	builder.NewDDL().Alter().Table("sd").Add().Column("hh", 1, 5, []int{76}).InsertAt(false, "sd").Execute()
