@@ -9,7 +9,7 @@ SQL query builder
     - [ ] Truncate
   - [ ] DML (Data Manipulation Language)
     - [ ] Insert query 
-    - [ ] Select query
+    - [ ] Update query
     - [ ] Delete query
   - [ ] DCL (Data Control Language)
     - [ ] Grant
