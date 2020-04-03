@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	builder "github.com/Snehal1112/QueryBuilder"
@@ -10,15 +9,14 @@ import (
 func main()  {
 	os.Setenv("DB_USER", "root")
 	os.Setenv("DB_PASSWORD", "Snehal@1977")
-	//os.Setenv("DB_DATABASE", "querybuilder")
+	os.Setenv("DB_DATABASE", "querybuilder")
 	os.Setenv("DRIVER", "mysql")
 
 	builders := builder.NewSQLBuilder("mysql")
 
-	log.Println(builders.GetSelectedDB())
-	//CreateTable(builders)
-	CreateDatabase(builders)
-
+	CreateTable(builders)
+	//CreateDatabase(builders)
+	//DropTable(builders)
 
 	// ddlQuery := builders.NewDDL()
 	// result, err := ddlQuery.Alter().Table("categories").Rename().Column("categoryName", "categoryName", query.NewDataType(query.VARCHAR, 200), query.NewConstrain(nil)).Execute()
