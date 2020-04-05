@@ -14,7 +14,6 @@ func DropTable(builder builder.SQL)  {
 		log.Fatal(err)
 	}
 
-	log.Println(result)
 	output, er := result.RowsAffected()
 
 	if er != nil {

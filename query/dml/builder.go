@@ -1,19 +1,23 @@
 package dml
 
-type Builder struct{}
+import "database/sql"
 
-func NewBuilder() *Builder {
-	return &Builder{}
+type Builder struct{
+	DB *sql.DB
 }
 
-func (D Builder) Update() {
+func NewBuilder(db *sql.DB) Service {
+	return &Builder{db}
+}
+
+func (D *Builder) Update() {
 	panic("implement me")
 }
 
-func (D Builder) Delete() {
+func (D *Builder) Delete() {
 	panic("implement me")
 }
 
-func (D Builder) Insert() {
-	panic("implement me")
+func (D *Builder) Insert() InsertService {
+	return NewInsertQuery(D)
 }
