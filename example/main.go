@@ -14,7 +14,15 @@ func main()  {
 
 	builders := builder.NewSQLBuilder("mysql")
 
-	CreateTable(builders)
+	// fields := query.NewField()
+	// fields.SetField("name","snehal")
+	// fields.SetField("last_name","dangroshiya")
+	// fields.SetField("contact", 9033397218)
+	// builders.NewDML().Insert().Into("categories").Row(fields).Execute()
+
+	InsertRow(builders)
+	InsertRows(builders)
+	//CreateTable(builders)
 	//CreateDatabase(builders)
 	//DropTable(builders)
 

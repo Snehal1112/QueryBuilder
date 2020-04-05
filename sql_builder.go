@@ -75,5 +75,5 @@ func (s *SQLBuilder) NewDDL() ddl.Service {
 
 // NewDML function is entry point for the DML(Data Manipulation Language)
 func (s *SQLBuilder) NewDML() dml.Service {
-	return dml.NewBuilder()
+	return dml.NewBuilder(s.DB)
 }
