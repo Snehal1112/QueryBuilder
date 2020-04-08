@@ -22,7 +22,7 @@ func NewAddColumn(table *Table) AddNewColumn {
 	return &AddColumn{tableName: table.name, table: table}
 }
 
-func (a *AddColumn) Column(name string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *AddColumn {
+func (a *AddColumn) Column(name string, fieldType *query.DataType, constrains *query.Constrain) *AddColumn {
 	a.columns = append(a.columns, column{
 		Name:      name,
 		FieldType: fieldType.AsString(),

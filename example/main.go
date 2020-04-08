@@ -13,27 +13,14 @@ func main()  {
 	os.Setenv("DRIVER", "mysql")
 
 	builders := builder.NewSQLBuilder("mysql")
-
-	// fields := query.NewField()
-	// fields.SetField("name","snehal")
-	// fields.SetField("last_name","dangroshiya")
-	// fields.SetField("contact", 9033397218)
-	// builders.NewDML().Insert().Into("categories").Row(fields).Execute()
-
-	InsertRow(builders)
-	InsertRows(builders)
+	//InsertRow(builders)
+	//InsertRows(builders)
 	//CreateTable(builders)
 	//CreateDatabase(builders)
 	//DropTable(builders)
 
-	// ddlQuery := builders.NewDDL()
-	// result, err := ddlQuery.Alter().Table("categories").Rename().Column("categoryName", "categoryName", query.NewDataType(query.VARCHAR, 200), query.NewConstrain(nil)).Execute()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// _, err = result.LastInsertId()
-	//
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	CreateCustomersTable(builders)
+	AddColumns(builders)
+	InsertCustomers(builders)
+	InsertSingleCustomer(builders)
 }

@@ -10,5 +10,6 @@ type Service interface {
 	prepareQuery() (string, []interface{})
 	Execute() (sql.Result, error)
 	Row(fields *query.Row) *QueryInsert
-	Rows(fields query.Rows) *QueryInsert
+	Rows(fields *query.Rows) *QueryInsert
+	Select(insertFields []string, selectFields []string, restriction interface{}) *QueryInsert
 }
