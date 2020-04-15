@@ -5,7 +5,8 @@
   <br>
 </h1>
 
-Query Builder is a flexible tool developed using Go, that is used to help in creating all kinds of SQL queries. Query Builder lets you: Create queries of unlimited length and complexity without the need to know the underlying database model.
+Query Builder is a flexible tool developed using Go, that is used to help in creating all kinds of SQL queries. 
+Query Builder lets you create lengthy queries and complexity without the need to know the underlying database model.
 
 First of all, we need to follow the below steps to set the env variable and create SQL Builder instance,
 
