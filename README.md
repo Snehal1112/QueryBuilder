@@ -1,4 +1,10 @@
-# QueryBuilder
+<h1 align="center">
+  <a href="https://github.com/Snehal1112/QueryBuilder"><img src="./querybuilder.png" alt="QueryBuilder" height="250px"></a>
+  <br>
+  QueryBuilder
+  <br>
+</h1>
+
 Query Builder is a flexible tool developed using Go, that is used to help in creating all kinds of SQL queries. Query Builder lets you: Create queries of unlimited length and complexity without the need to know the underlying database model.
 
 First of all, we need to follow the below steps to set the env variable and create SQL Builder instance,
@@ -7,9 +13,9 @@ First of all, we need to follow the below steps to set the env variable and crea
 
 ```
   os.Setenv("DB_USER", "root")
-	os.Setenv("DB_PASSWORD", "Snehal@1977")
-	os.Setenv("DB_DATABASE", "querybuilder")
-	os.Setenv("DRIVER", "mysql")
+  os.Setenv("DB_PASSWORD", "Snehal@1977")
+  os.Setenv("DB_DATABASE", "querybuilder")
+  os.Setenv("DRIVER", "mysql")
 ```
 
 #### CREATE SQL BUILDER INSTANCE :
@@ -28,10 +34,8 @@ After doing this, we can now use ```builders``` for creating any query.
     
       - Example :
        ```
-        func CreateDatabase(builder builder.SQL)
-        {
-          ddlQuery := builder.NewDDL()
-          createDatabase := ddlQuery.Create().Database("sddd")
+          ddlQuery := builders.NewDDL()
+          createDatabase := ddlQuery.Create().Database("TestDatabase")
           result, err := createDatabase.Execute()
           if err != nil {
             log.Fatal(err)
@@ -41,17 +45,14 @@ After doing this, we can now use ```builders``` for creating any query.
             log.Fatal(err)
           }
           log.Println("TestDatabase is created")
-        }
         ```
           
     - [X] Drop (table, database)
     
       - Example :
        ```
-        func DropTable(builder builder.SQL)
-        {
-          drop := builder.NewDDL().Drop()
-          table := drop.Table([]string{"TESTDB"})
+          drop := builders.NewDDL().Drop()
+          table := drop.Table([]string{"products"})
           result, err := table.Execute()
           if err != nil {
             log.Fatal(err)
