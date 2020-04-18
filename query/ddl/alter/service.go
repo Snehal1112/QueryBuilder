@@ -17,7 +17,7 @@ type TableService interface {
 }
 
 type AddNewColumn interface {
-	Column(name string, fieldType *query.DataType, constrains *query.Constrain, options ...interface{}) *AddColumn
+	Column(name string, fieldType *query.DataType, constrains *query.Constrain) *AddColumn
 	Service
 }
 

@@ -1,58 +1,18 @@
 package query
 
-type Row map[string]interface{}
-
-func NewRow() *Row {
-	fields := make(Row)
-	return &fields
+type Field struct {
+	Key   string
+	Value interface{}
 }
 
-func (f *Row) GetNames() (fields []string) {
-	for k, _ := range *f {
-		fields = append(fields, k)
-	}
-	return
+func NewField(key string, value interface{}) FieldService {
+	return &Field{Key: key, Value: value}
 }
 
-func (f *Row) Transpile() (fields , placeholders []string, args []interface{}) {
-	for k, v := range *f {
-		fields = append(fields, k)
-		args = append(args, v)
-		placeholders = append(placeholders, "?")
-	}
-	return
+func (f *Field) GetKey() string {
+	return f.Key
 }
 
-func (f *Row) Placeholders() (placeholders []string) {
-	for i:=0; i < len(*f); i++ {
-		placeholders = append(placeholders, "?")
-	}
-
-	return
+func (f *Field) GetValue() interface{} {
+	return f.Value
 }
-
-func (f *Row) SetField(key string, value interface{}) *Row {
-	(*f)[key] = value
-	return f
-}
-
-type Rows []*Row
-
-func NewRows() *Rows {
-	return &Rows{}
-}
-
-func (r *Rows) SetField(row *Row) Rows{
-	*r = append(*r, row)
-	return *r
-}
-
-func (r *Rows) GetValues() (args []interface{}) {
-	for _, v := range *r {
-		for _, i := range *v {
-			args = append(args, i)
-		}
-	}
-	return
-}
-

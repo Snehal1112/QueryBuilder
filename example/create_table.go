@@ -62,3 +62,21 @@ func CreateTable(builder builder.SQL) {
 	}
 	log.Println("Products table created ")
 }
+
+func CreateCustomersTable(builder builder.SQL) {
+	table:=builder.NewDDL().Create().Table("customers")
+	table.Field("id", query.NewDataType(query.INT,50), query.NewConstrain([]int{query.NOTNULL, query.AI,query.PK}))
+	table.Field("name", query.NewDataType(query.VARCHAR,100), query.NewConstrain(nil))
+	table.Field("address", query.NewDataType(query.VARCHAR,200), query.NewConstrain(nil))
+	table.Field("salary", query.NewDataType(query.INT,50), query.NewConstrain(nil))
+	result, err := table.Execute()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = result.LastInsertId()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}
