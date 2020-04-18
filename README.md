@@ -13,10 +13,10 @@ First of all, we need to follow the below steps to set the env variable and crea
 #### SET ENV VARIABLE : 
 
 ```
-  os.Setenv("DB_USER", "root")
-  os.Setenv("DB_PASSWORD", "Snehal@1977")
-  os.Setenv("DB_DATABASE", "querybuilder")
-  os.Setenv("DRIVER", "mysql")
+  os.Setenv("DB_USER", <username>)
+  os.Setenv("DB_PASSWORD", <password>)
+  os.Setenv("DB_DATABASE", <database>)
+  os.Setenv("DRIVER", <driver>)
 ```
 
 #### CREATE SQL BUILDER INSTANCE :
@@ -24,10 +24,7 @@ First of all, we need to follow the below steps to set the env variable and crea
 ```
   builders := builder.NewSQLBuilder("mysql")
 ```
-
 After doing this, we can now use ```builders``` for creating any query.
-
-
 
 # Supported sql query
   - [ ] DDL (Data Definition Language)
@@ -67,9 +64,9 @@ After doing this, we can now use ```builders``` for creating any query.
         ```
         
     - [X] Alter (table, database)
-    - [ ] Truncate
+    - [X] Truncate
   - [ ] DML (Data Manipulation Language)
-    - [ ] Insert query 
+    - [x] Insert query 
     - [ ] Update query
     - [ ] Delete query
   - [ ] DCL (Data Control Language)

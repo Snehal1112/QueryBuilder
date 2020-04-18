@@ -4,12 +4,14 @@ import (
 	"github.com/Snehal1112/QueryBuilder/query/ddl/alter"
 	"github.com/Snehal1112/QueryBuilder/query/ddl/create"
 	"github.com/Snehal1112/QueryBuilder/query/ddl/drop"
+	"github.com/Snehal1112/QueryBuilder/query/ddl/truncate"
 )
 
 type Service interface {
 	Create() CreateService
 	Drop() DropService
 	Alter() AlterService
+	Truncate() TruncateService
 }
 
 type CreateService interface {
@@ -24,4 +26,8 @@ type DropService interface {
 
 type AlterService interface {
 	Table(name string) alter.TableService
+}
+
+type TruncateService interface {
+	Table(name string) truncate.Service
 }
