@@ -21,3 +21,7 @@ func (b *Builder) Alter() AlterService {
 func (b *Builder) Create() CreateService {
 	return NewCreateQuery(b)
 }
+
+func (b *Builder) Truncate() TruncateService {
+	return NewTruncateQuery(b)
+}

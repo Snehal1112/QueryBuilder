@@ -23,4 +23,5 @@ func main()  {
 	AddColumns(builders)
 	InsertCustomers(builders)
 	InsertSingleCustomer(builders)
+	TruncateTable(builders, "customers")
 }
